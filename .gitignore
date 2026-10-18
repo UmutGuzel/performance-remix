@@ -1,0 +1,37 @@
+# secrets
+.env
+.env.local
+.env.*.local
+
+# node / next
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# model weights and generated media
+*.safetensors
+*.ckpt
+*.gguf
+*.pt
+*.pth
+models/
+outputs/
+output/
+*.mp4
+*.mov
+*.mkv
+*.webm
+!samples/*.mp4
+
+# os / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
