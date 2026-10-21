@@ -6,6 +6,22 @@ page does not show one. Weights are never committed to this repository.
 
 Place files in the ComfyUI folder named in each table.
 
+## Stage 1, look: Qwen-Image-Edit 2511
+
+License: Apache 2.0 for the model, the Lightning LoRA and the Qwen2.5-VL text encoder.
+Source model: https://huggingface.co/Qwen/Qwen-Image-Edit-2511
+
+| ComfyUI folder | File | Size | Source |
+|---|---|---|---|
+| diffusion_models | `qwen_image_edit_2511_fp8mixed.safetensors` | 20.5 GB | https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI, folder `split_files/diffusion_models` |
+| text_encoders | `qwen_2.5_vl_7b_fp8_scaled.safetensors` | 9.4 GB | https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI, folder `split_files/text_encoders` |
+| vae | `qwen_image_vae.safetensors` | 0.25 GB | same repo, folder `split_files/vae` |
+| loras | `Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors` | 0.85 GB | https://huggingface.co/lightx2v/Qwen-Image-Edit-2511-Lightning |
+
+Settings: 4 steps, euler, simple scheduler, cfg 1, ModelSamplingAuraFlow shift 3.1,
+CFGNorm 1, reference latents method `index_timestep_zero`. Measured on an RTX 5090:
+four 752x1392 candidates in 37.5 s with the text encoder already loaded.
+
 ## Generation: Wan-Animate-2 (Character, World and Style modes)
 
 License: Apache 2.0. Source model: https://huggingface.co/Wan-AI/Wan2.2-Animate-2-14B

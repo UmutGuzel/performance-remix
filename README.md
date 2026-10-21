@@ -29,15 +29,24 @@ Outputs
 
 ## How it works
 
+Two stages, so the slow video render only runs on a look you have approved.
+
+**Stage 1, look.** One frame of your clip and up to two reference images go into an
+image edit model. It returns four candidate stills in the clip's own framing and aspect
+ratio. Pick one, or change the prompt and run again.
+
+**Skip stage 1** when you already have the final image: load it straight into stage 2.
+Keep its framing close to the clip's, full body to full body and close-up to close-up.
+
+**Stage 2, motion.** The approved still and the clip go into the video model.
+
 1. Ingest: trims and resizes the clip, normalizes frame rate, keeps the audio aside.
-2. References: packs the reference images into one labeled reference sheet the model
-   can read.
-3. Masks and control: a person or object mask for World and Object modes, pose or depth
+2. Masks and control: a person or object mask for World and Object modes, pose or depth
    maps where the generation model needs them.
-4. Generation: an open-weights video model conditioned on the driving clip and the
-   reference sheet. Long clips are generated in overlapping windows with the motion
-   carried across each seam.
-5. Finish: video super-resolution, sharpening and grade, then a high-bitrate export
+3. Generation: an open-weights video model animates the approved still with the clip's
+   motion. Long clips are rendered as a chain of 81-frame pieces in one run; each piece
+   starts from the last frame of the one before.
+4. Finish: video super-resolution, sharpening and grade, then a high-bitrate export
    with the source audio muxed back in.
 
 ## Requirements
@@ -52,8 +61,9 @@ Outputs
 In ComfyUI only
 
 1. Download the models listed in `docs/models.md` into your ComfyUI `models` folders.
-2. Open a workflow from `workflows/editor/` in ComfyUI.
-3. Set the video, reference images and prompt, then queue.
+2. Open `workflows/editor/stage1_look.json` in ComfyUI. Set the clip, the reference
+   image and the prompt, then run. The candidates land in `output/performance-remix/`.
+3. Load the candidate you like, or your own final image, into the stage 2 workflow.
 
 With the web app
 
@@ -69,6 +79,7 @@ app against a Comfy API deployment instead of a local ComfyUI.
 
 | Role | Model | License |
 |---|---|---|
+| Look, stage 1 | Qwen-Image-Edit 2511 with the Lightning 4-step LoRA | Apache 2.0 |
 | Generation | Wan-Animate-2 14B or LTX-2.5 22B distilled | Apache 2.0 / LTX-2.x Community |
 | Object mode | Wan2.2-Animate 14B | Apache 2.0 |
 | Masks | SAM2 | Apache 2.0 |
@@ -89,8 +100,8 @@ samples/    small example inputs
 
 ## Status
 
-Early development. The Character mode workflow comes first; Object, World and Style
-follow.
+Early development. The stage 1 workflow is in `workflows/`. The stage 2 workflow and
+the web app come next, starting with Character mode; Object, World and Style follow.
 
 ## License
 
