@@ -10,6 +10,11 @@ It comes as ComfyUI workflows you can open and run, plus a small web app that ru
 for you in four steps. Built for Comfy Org's
 [Open Source Higgsfield](https://comfy.org/open-source-higgsfield) competition.
 
+The demo in two minutes: the examples, the app from upload to result, and the workflows
+behind it.
+
+https://github.com/user-attachments/assets/b90c4268-2839-4b54-abdf-775f93af1d89
+
 ## Examples
 
 **People and pets**: one character image, such as a painting, a photo or a drawing.
