@@ -1,0 +1,146 @@
+{
+  "1": {
+    "inputs": {
+      "file": "driving_clip.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "The clip"
+    }
+  },
+  "2": {
+    "inputs": {
+      "start_time": 0,
+      "duration": 5,
+      "strict_duration": false,
+      "video": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "Video Slice",
+    "_meta": {
+      "title": "Clip range (seconds)"
+    }
+  },
+  "3": {
+    "inputs": {
+      "video": [
+        "2",
+        0
+      ],
+      "starts": "0",
+      "crossfade_frames": 8,
+      "crf": 16,
+      "filename_prefix": "performance-remix/motion_object",
+      "window_1": [
+        "11",
+        0
+      ],
+      "window_2": [
+        "12",
+        0
+      ],
+      "window_3": [
+        "13",
+        0
+      ],
+      "window_4": [
+        "14",
+        0
+      ],
+      "window_5": [
+        "15",
+        0
+      ],
+      "window_6": [
+        "16",
+        0
+      ],
+      "window_7": [
+        "17",
+        0
+      ],
+      "window_8": [
+        "18",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixJoinWindows",
+    "_meta": {
+      "title": "Join object windows"
+    }
+  },
+  "11": {
+    "inputs": {
+      "file": "window_1.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 1"
+    }
+  },
+  "12": {
+    "inputs": {
+      "file": "window_2.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 2"
+    }
+  },
+  "13": {
+    "inputs": {
+      "file": "window_3.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 3"
+    }
+  },
+  "14": {
+    "inputs": {
+      "file": "window_4.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 4"
+    }
+  },
+  "15": {
+    "inputs": {
+      "file": "window_5.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 5"
+    }
+  },
+  "16": {
+    "inputs": {
+      "file": "window_6.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 6"
+    }
+  },
+  "17": {
+    "inputs": {
+      "file": "window_7.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 7"
+    }
+  },
+  "18": {
+    "inputs": {
+      "file": "window_8.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Window 8"
+    }
+  }
+}

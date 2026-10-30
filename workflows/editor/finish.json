@@ -1,0 +1,421 @@
+{
+  "id": "065a198c-a148-4281-a0db-f2a4fc86b800",
+  "revision": 0,
+  "last_node_id": 5,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -560,
+        0
+      ],
+      "size": [
+        500,
+        640
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "How to use",
+      "properties": {},
+      "widgets_values": [
+        "## Performance Remix: finish\n\nUpscales a stage 2 video with SeedVR2, applies a light grade and saves an H.264 MP4 with the original audio. It works through the video one segment at a time, so memory stays the same for a 5-second or a 30-second clip.\n\n1. **Video to finish**: a video from `output/performance-remix/motion_*.mp4`, copied into `input/`.\n2. **Streaming Finish** settings:\n   - **scale**: 2 turns 480x848 into 960x1696.\n   - **segment_frames**: frames processed at once; lower it if you run out of memory.\n   - **overlap**: frames shared by neighbouring segments and crossfaded.\n   - **color_correction**: lab keeps the colors of the input.\n   - **sharpen** and **contrast**: the light grade; set 0 and 1.0 for the plain upscale.\n   - **crf**: H.264 quality, 16 by default.\n3. Run. The MP4 is saved to `output/performance-remix/finish_*.mp4`.\n\nModel: `seedvr2_3b_int8_convrot` by default; `seedvr2_7b_sharp_int8_convrot` gives smoother lines. Files: https://huggingface.co/Comfy-Org/SeedVR2 (Apache 2.0).\n\nMeasured on a 32 GB GPU: an 11-second clip (337 frames) in 444 s, 8.1 GB of process RAM, 14.3 GB of GPU memory."
+      ],
+      "widgets_values_named": {
+        "text": "## Performance Remix: finish\n\nUpscales a stage 2 video with SeedVR2, applies a light grade and saves an H.264 MP4 with the original audio. It works through the video one segment at a time, so memory stays the same for a 5-second or a 30-second clip.\n\n1. **Video to finish**: a video from `output/performance-remix/motion_*.mp4`, copied into `input/`.\n2. **Streaming Finish** settings:\n   - **scale**: 2 turns 480x848 into 960x1696.\n   - **segment_frames**: frames processed at once; lower it if you run out of memory.\n   - **overlap**: frames shared by neighbouring segments and crossfaded.\n   - **color_correction**: lab keeps the colors of the input.\n   - **sharpen** and **contrast**: the light grade; set 0 and 1.0 for the plain upscale.\n   - **crf**: H.264 quality, 16 by default.\n3. Run. The MP4 is saved to `output/performance-remix/finish_*.mp4`.\n\nModel: `seedvr2_3b_int8_convrot` by default; `seedvr2_7b_sharp_int8_convrot` gives smoother lines. Files: https://huggingface.co/Comfy-Org/SeedVR2 (Apache 2.0).\n\nMeasured on a 32 GB GPU: an 11-second clip (337 frames) in 444 s, 8.1 GB of process RAM, 14.3 GB of GPU memory."
+      },
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 2,
+      "type": "LoadVideo",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        282.798828125,
+        82
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "file",
+          "name": "file",
+          "type": "COMBO",
+          "widget": {
+            "name": "file"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VIDEO",
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "title": "Video to finish",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "Node name for S&R": "LoadVideo"
+      },
+      "widgets_values": [
+        "video_to_finish.mp4",
+        "image"
+      ],
+      "widgets_values_named": {
+        "file": "video_to_finish.mp4",
+        "upload": "image"
+      }
+    },
+    {
+      "id": 3,
+      "type": "UNETLoader",
+      "pos": [
+        0,
+        460
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "weight_dtype",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "title": "Load SeedVR2",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "seedvr2_3b_int8_convrot.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/diffusion_models/seedvr2_3b_int8_convrot.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "seedvr2_3b_int8_convrot.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "unet_name": "seedvr2_3b_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    {
+      "id": 4,
+      "type": "VAELoader",
+      "pos": [
+        0,
+        600
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "title": "Load SeedVR2 VAE",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "seedvr2_ema_vae_fp16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/SeedVR2/resolve/main/vae/seedvr2_ema_vae_fp16.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "seedvr2_ema_vae_fp16.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "seedvr2_ema_vae_fp16.safetensors"
+      }
+    },
+    {
+      "id": 5,
+      "type": "PerformanceRemixStreamingFinish",
+      "pos": [
+        380,
+        0
+      ],
+      "size": [
+        380,
+        420
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "video",
+          "name": "video",
+          "type": "VIDEO",
+          "link": 1
+        },
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 3
+        },
+        {
+          "localized_name": "scale",
+          "name": "scale",
+          "type": "FLOAT",
+          "widget": {
+            "name": "scale"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "segment_frames",
+          "name": "segment_frames",
+          "type": "INT",
+          "widget": {
+            "name": "segment_frames"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "overlap",
+          "name": "overlap",
+          "type": "INT",
+          "widget": {
+            "name": "overlap"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "color_correction",
+          "name": "color_correction",
+          "type": "COMBO",
+          "widget": {
+            "name": "color_correction"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "sharpen",
+          "name": "sharpen",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sharpen"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "contrast",
+          "name": "contrast",
+          "type": "FLOAT",
+          "widget": {
+            "name": "contrast"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "crf",
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "video",
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "Streaming Finish",
+      "properties": {
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        },
+        "Node name for S&R": "PerformanceRemixStreamingFinish"
+      },
+      "widgets_values": [
+        2,
+        49,
+        4,
+        "lab",
+        0.15,
+        1.03,
+        16,
+        20261021,
+        "randomize",
+        "performance-remix/finish"
+      ],
+      "widgets_values_named": {
+        "scale": 2,
+        "segment_frames": 49,
+        "overlap": 4,
+        "color_correction": "lab",
+        "sharpen": 0.15,
+        "contrast": 1.03,
+        "crf": 16,
+        "seed": 20261021,
+        "control_after_generate": "randomize",
+        "filename_prefix": "performance-remix/finish"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      5,
+      0,
+      "VIDEO"
+    ],
+    [
+      2,
+      3,
+      0,
+      5,
+      1,
+      "MODEL"
+    ],
+    [
+      3,
+      4,
+      0,
+      5,
+      2,
+      "VAE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.45,
+      "offset": [
+        -1901.6666666666667,
+        -1172.3333333333333
+      ]
+    }
+  },
+  "version": 0.4
+}

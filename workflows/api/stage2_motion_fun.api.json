@@ -1,0 +1,573 @@
+{
+  "2": {
+    "inputs": {
+      "image": "approved_still.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Approved still"
+    }
+  },
+  "3": {
+    "inputs": {
+      "file": "driving_clip.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Driving clip"
+    }
+  },
+  "4": {
+    "inputs": {
+      "start_time": 0,
+      "duration": 0,
+      "strict_duration": false,
+      "video": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Video Slice",
+    "_meta": {
+      "title": "Clip range (seconds)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "size": "shorter side",
+      "shorter_side": 720,
+      "width": 704,
+      "height": 1248,
+      "video": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixClipFrames",
+    "_meta": {
+      "title": "Clip frames at working size"
+    }
+  },
+  "8": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "Load text encoder"
+    }
+  },
+  "9": {
+    "inputs": {
+      "clip_name": "clip_vision_h.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP vision"
+    }
+  },
+  "10": {
+    "inputs": {
+      "vae_name": "Wan2_1_VAE_bf16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "11": {
+    "inputs": {
+      "unet_name": "wan_animate_2_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load Wan-Animate-2"
+    }
+  },
+  "12": {
+    "inputs": {
+      "lora_name": "lightx2v_I2V_14B_480p_cfg_step_distill_rank64_bf16.safetensors",
+      "strength_model": 1,
+      "model": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "lightx2v step-distill LoRA"
+    }
+  },
+  "13": {
+    "inputs": {
+      "device": "gpu",
+      "dtype": "int8",
+      "model": [
+        "12",
+        0
+      ]
+    },
+    "class_type": "WanAnimate2Cache",
+    "_meta": {
+      "title": "WanAnimate2Cache"
+    }
+  },
+  "14": {
+    "inputs": {
+      "shift": 5,
+      "model": [
+        "13",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "ModelSamplingSD3"
+    }
+  },
+  "15": {
+    "inputs": {
+      "scheduler": "simple",
+      "steps": 6,
+      "denoise": 1,
+      "model": [
+        "13",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler (6 steps)"
+    }
+  },
+  "16": {
+    "inputs": {
+      "sampler_name": "lcm"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "18": {
+    "inputs": {
+      "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+      "clip": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Negative prompt"
+    }
+  },
+  "23": {
+    "inputs": {
+      "fps": [
+        "5",
+        2
+      ],
+      "bit_depth": "auto",
+      "color_space": "sRGB",
+      "images": [
+        "34",
+        0
+      ],
+      "audio": [
+        "5",
+        1
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create video with clip audio"
+    }
+  },
+  "24": {
+    "inputs": {
+      "filename_prefix": "performance-remix/motion_fun",
+      "format": "auto",
+      "format.codec": "auto",
+      "codec": "auto",
+      "video": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save video"
+    }
+  },
+  "26": {
+    "inputs": {
+      "image": "face_reference.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Face reference"
+    }
+  },
+  "27": {
+    "inputs": {
+      "crop_size": 512,
+      "box_scale": 2.4,
+      "smooth_frames": 7,
+      "min_score": 0.6,
+      "images": [
+        "68",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixFaceTrackCrop",
+    "_meta": {
+      "title": "Face crop: video"
+    }
+  },
+  "28": {
+    "inputs": {
+      "crop_size": 512,
+      "box_scale": 2.4,
+      "smooth_frames": 1,
+      "min_score": 0.6,
+      "images": [
+        "26",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixFaceTrackCrop",
+    "_meta": {
+      "title": "Face crop: reference"
+    }
+  },
+  "29": {
+    "inputs": {
+      "text": "Character appearance description: a close-up of the face of the character in the face reference; describe the face, hair and skin. Background description: a plain light grey wall.",
+      "clip": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Face appearance prompt"
+    }
+  },
+  "30": {
+    "inputs": {
+      "text": "A close-up of a face moving and making expressions, the head turns and tilts, hands sometimes pass in front, static camera",
+      "clip": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Face motion prompt"
+    }
+  },
+  "31": {
+    "inputs": {
+      "crop": "none",
+      "clip_vision": [
+        "9",
+        0
+      ],
+      "image": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "CLIPVisionEncode",
+    "_meta": {
+      "title": "CLIP vision: face reference"
+    }
+  },
+  "32": {
+    "inputs": {
+      "noise_seed": 20261021,
+      "cfg": 1,
+      "piece_length": 81,
+      "pose_strength": 1,
+      "reference_image_strength": 1,
+      "max_frames": 0,
+      "pose_start_percent": 0,
+      "pose_end_percent": 1,
+      "model": [
+        "14",
+        0
+      ],
+      "positive": [
+        "29",
+        0
+      ],
+      "negative": [
+        "18",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "sampler": [
+        "16",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "reference_image": [
+        "28",
+        0
+      ],
+      "pose_video": [
+        "51",
+        0
+      ],
+      "positive_pose": [
+        "30",
+        0
+      ],
+      "clip_vision_output": [
+        "31",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixWanAnimate2Long",
+    "_meta": {
+      "title": "Face pass"
+    }
+  },
+  "33": {
+    "inputs": {
+      "oval_width": 0.5,
+      "oval_height": 0.6,
+      "feather": 0.03,
+      "color_match": true,
+      "min_score": 0.6,
+      "images": [
+        "68",
+        0
+      ],
+      "face_images": [
+        "32",
+        0
+      ],
+      "face_track": [
+        "27",
+        1
+      ],
+      "smooth_frames": 3
+    },
+    "class_type": "PerformanceRemixFacePaste",
+    "_meta": {
+      "title": "Face paste"
+    }
+  },
+  "34": {
+    "inputs": {
+      "switch": true,
+      "on_false": [
+        "68",
+        0
+      ],
+      "on_true": [
+        "33",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Face pass on/off"
+    }
+  },
+  "50": {
+    "class_type": "PerformanceRemixFaceTrackCrop",
+    "_meta": {
+      "title": "Face crop: driving clip"
+    },
+    "inputs": {
+      "crop_size": 512,
+      "box_scale": 2.4,
+      "smooth_frames": 7,
+      "min_score": 0.6,
+      "images": [
+        "5",
+        0
+      ]
+    }
+  },
+  "51": {
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Face driver: off = output face (likeness), on = clip face (expressions)"
+    },
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "27",
+        0
+      ],
+      "on_true": [
+        "50",
+        0
+      ]
+    }
+  },
+  "60": {
+    "class_type": "DWPreprocessor",
+    "inputs": {
+      "detect_hand": "enable",
+      "detect_body": "enable",
+      "detect_face": "enable",
+      "resolution": 720,
+      "bbox_detector": "yolox_l.onnx",
+      "pose_estimator": "dw-ll_ucoco_384_bs5.torchscript.pt",
+      "scale_stick_for_xinsr_cn": "disable",
+      "image": [
+        "5",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Pose (DWPose), output size"
+    }
+  },
+  "61": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "wan2.2_fun_control_high_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "Load Fun Control (high noise)"
+    }
+  },
+  "62": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "wan2.2_fun_control_low_noise_14B_fp8_scaled.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "Load Fun Control (low noise)"
+    }
+  },
+  "63": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "lora_name": "wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors",
+      "strength_model": 1,
+      "model": [
+        "61",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "lightx2v 4-step LoRA (high)"
+    }
+  },
+  "64": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "lora_name": "wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors",
+      "strength_model": 1,
+      "model": [
+        "62",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "lightx2v 4-step LoRA (low)"
+    }
+  },
+  "65": {
+    "class_type": "ModelSamplingSD3",
+    "inputs": {
+      "shift": 8,
+      "model": [
+        "63",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "ModelSamplingSD3 (high)"
+    }
+  },
+  "66": {
+    "class_type": "ModelSamplingSD3",
+    "inputs": {
+      "shift": 8,
+      "model": [
+        "64",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "ModelSamplingSD3 (low)"
+    }
+  },
+  "67": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "Prompt"
+    },
+    "inputs": {
+      "clip": [
+        "8",
+        0
+      ],
+      "text": "Describe the character of the approved still (face, hair, outfit, colors), what they do, the place around them and the camera, for example: dances in place, full body visible, static camera."
+    }
+  },
+  "68": {
+    "class_type": "PerformanceRemixFunControlLong",
+    "_meta": {
+      "title": "Long motion transfer (Fun Control)"
+    },
+    "inputs": {
+      "model_high_noise": [
+        "65",
+        0
+      ],
+      "model_low_noise": [
+        "66",
+        0
+      ],
+      "positive": [
+        "67",
+        0
+      ],
+      "negative": [
+        "18",
+        0
+      ],
+      "vae": [
+        "10",
+        0
+      ],
+      "ref_image": [
+        "2",
+        0
+      ],
+      "control_video": [
+        "60",
+        0
+      ],
+      "noise_seed": 20261021,
+      "steps": 4,
+      "switch_step": 2,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "piece_length": 81,
+      "overlap_frames": 5,
+      "max_frames": 0
+    }
+  }
+}

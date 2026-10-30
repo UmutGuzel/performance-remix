@@ -1,15 +1,16 @@
-# secrets
-.env
-.env.local
-.env.*.local
+# secrets and local settings; .env.example is the template
+.env*
+!.env.example
 
-# node / next
+# node / next: npm ci and npm run dev make these again
 node_modules/
 .next/
 out/
-npm-debug.log*
+next-env.d.ts
+*.tsbuildinfo
+*.log
 
-# python
+# python: the local comfy-api-proxy install
 __pycache__/
 *.pyc
 .venv/
@@ -21,6 +22,7 @@ venv/
 *.gguf
 *.pt
 *.pth
+*.onnx
 models/
 outputs/
 output/
@@ -28,10 +30,12 @@ output/
 *.mov
 *.mkv
 *.webm
-!samples/*.mp4
+# test renders, comparison stills and the demo video: shared elsewhere, not part of the app
+demo/
 
 # os / editors
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/

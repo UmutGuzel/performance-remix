@@ -1,0 +1,261 @@
+{
+  "2": {
+    "inputs": {
+      "image": "approved_still.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Approved still"
+    }
+  },
+  "3": {
+    "inputs": {
+      "file": "driving_clip.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Driving clip"
+    }
+  },
+  "4": {
+    "inputs": {
+      "start_time": 0,
+      "duration": 0,
+      "strict_duration": false,
+      "video": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "Video Slice",
+    "_meta": {
+      "title": "Clip range (seconds)"
+    }
+  },
+  "5": {
+    "inputs": {
+      "size": "width x height",
+      "shorter_side": 720,
+      "width": 704,
+      "height": 1248,
+      "video": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixClipFrames",
+    "_meta": {
+      "title": "Clip frames at working size"
+    }
+  },
+  "6": {
+    "inputs": {
+      "target_fps": 24.0,
+      "images": [
+        "5",
+        0
+      ],
+      "source_fps": [
+        "5",
+        2
+      ]
+    },
+    "class_type": "PerformanceRemixChangeFrameRate",
+    "_meta": {
+      "title": "Clip at 24 fps"
+    }
+  },
+  "7": {
+    "inputs": {
+      "unet_name": "minimax_h3_ref2va_viggle_pruned_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Viggle-Animate model"
+    }
+  },
+  "8": {
+    "inputs": {
+      "lora_name": "viggle_animate_dmd_lora.safetensors",
+      "strength_model": 1.0,
+      "model": [
+        "7",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "Viggle DMD LoRA"
+    }
+  },
+  "9": {
+    "inputs": {
+      "shift_video": 3.0,
+      "shift_audio": 3.0,
+      "model": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "MiniMaxH3SigmaShift",
+    "_meta": {
+      "title": "Sigma shift"
+    }
+  },
+  "10": {
+    "inputs": {
+      "text_cond": "fixed_embed_fwd_anyframe.safetensors"
+    },
+    "class_type": "ViggleTextCondLoader",
+    "_meta": {
+      "title": "Viggle text conditioning"
+    }
+  },
+  "11": {
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_int8_convrot.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "H3 video VAE"
+    }
+  },
+  "12": {
+    "inputs": {
+      "width": [
+        "5",
+        3
+      ],
+      "height": [
+        "5",
+        4
+      ],
+      "chunk_frames": 90,
+      "overlap_frames": 22,
+      "continuation": "five_frame_anchor",
+      "cond_video": [
+        "6",
+        0
+      ],
+      "ref_image": [
+        "2",
+        0
+      ],
+      "text_cond": [
+        "10",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "ViggleAnimateConditioningWindowed",
+    "_meta": {
+      "title": "Viggle conditioning (windows)"
+    }
+  },
+  "13": {
+    "inputs": {
+      "model": [
+        "9",
+        0
+      ],
+      "conditioning": [
+        "12",
+        1
+      ]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "Guider"
+    }
+  },
+  "14": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "Sampler"
+    }
+  },
+  "15": {
+    "inputs": {
+      "sigmas": "1.0, 0.9230769230769231, 0.8181818181818182, 0.6666666666666666, 0.42857142857142855, 0.0"
+    },
+    "class_type": "ManualSigmas",
+    "_meta": {
+      "title": "Sigmas (6 steps)"
+    }
+  },
+  "16": {
+    "inputs": {
+      "seed": 20261021,
+      "rerender_chunk": 0,
+      "rerender_seed": 0,
+      "guider": [
+        "13",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "cond_set": [
+        "12",
+        0
+      ],
+      "vae": [
+        "11",
+        0
+      ]
+    },
+    "class_type": "ViggleChunkedSampler",
+    "_meta": {
+      "title": "Viggle sampler (windows)"
+    }
+  },
+  "17": {
+    "inputs": {
+      "bit_depth": "auto",
+      "color_space": "sRGB",
+      "images": [
+        "16",
+        0
+      ],
+      "fps": [
+        "6",
+        1
+      ],
+      "audio": [
+        "5",
+        1
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video"
+    }
+  },
+  "18": {
+    "inputs": {
+      "filename_prefix": "performance-remix/motion_viggle",
+      "format": "auto",
+      "codec": "auto",
+      "video": [
+        "17",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video"
+    }
+  }
+}

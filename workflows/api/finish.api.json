@@ -1,0 +1,59 @@
+{
+  "2": {
+    "inputs": {
+      "file": "video_to_finish.mp4"
+    },
+    "class_type": "LoadVideo",
+    "_meta": {
+      "title": "Video to finish"
+    }
+  },
+  "3": {
+    "inputs": {
+      "unet_name": "seedvr2_3b_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "Load SeedVR2"
+    }
+  },
+  "4": {
+    "inputs": {
+      "vae_name": "seedvr2_ema_vae_fp16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load SeedVR2 VAE"
+    }
+  },
+  "5": {
+    "inputs": {
+      "scale": 2,
+      "segment_frames": 49,
+      "overlap": 4,
+      "color_correction": "lab",
+      "sharpen": 0.15,
+      "contrast": 1.03,
+      "crf": 16,
+      "seed": 20261021,
+      "filename_prefix": "performance-remix/finish",
+      "video": [
+        "2",
+        0
+      ],
+      "model": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "PerformanceRemixStreamingFinish",
+    "_meta": {
+      "title": "Streaming Finish"
+    }
+  }
+}
